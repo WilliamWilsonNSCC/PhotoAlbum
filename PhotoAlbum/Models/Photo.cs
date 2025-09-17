@@ -8,5 +8,11 @@
         public string Description { get; set; } = string.Empty;
         public string Filename { get; set; } = string.Empty;
         public DateTime CreateDate { get; set; }
+
+        //Foreign Key
+        public int CategoryID { get; set; }
+
+        //Navigation property
+        public Category? Category { get; set; }
     }
 }
