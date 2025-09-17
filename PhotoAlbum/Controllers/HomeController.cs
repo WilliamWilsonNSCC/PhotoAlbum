@@ -19,6 +19,11 @@ namespace PhotoAlbum.Controllers
             return View();
         }
 
+        public IActionResult Hello()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
