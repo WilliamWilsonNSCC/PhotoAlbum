@@ -1,7 +1,19 @@
-﻿@{
+﻿@model List<PhotoAlbum.Models.Photo>
+
+@{
     ViewData["Title"] = "All My Photos";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<p>Display a list of all my photos</p>
+<h1>All Photos</h1>
+@foreach (var item in Model)
+{
+    <div>
+        <h2>@item.Title</h2>
+        <p>
+            @item.PhotoId<br />
+            @item.Description<br />
+            @item.CreateDate<br />
+            @item.Filename
+        </p>
+    </div>
+}
