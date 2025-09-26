@@ -1,12 +1,16 @@
-﻿namespace PhotoAlbum.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PhotoAlbum.Models
 {
     public class Photo
     {
         // Primary key
+        [Display(Name="Id")]
         public int PhotoId { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Filename { get; set; } = string.Empty;
+        [Display(Name = "Created")]
         public DateTime CreateDate { get; set; }
 
         //Foreign Key

@@ -10,23 +10,22 @@ using PhotoAlbum.Models;
 
 namespace PhotoAlbum.Controllers
 {
-    public class PhotosController : Controller
+    public class CategoriesController : Controller
     {
         private readonly PhotoAlbumContext _context;
 
-        public PhotosController(PhotoAlbumContext context)
+        public CategoriesController(PhotoAlbumContext context)
         {
             _context = context;
         }
 
-        // GET: Photos
+        // GET: Categories
         public async Task<IActionResult> Index()
         {
-            var photoAlbumContext = _context.Photo.Include(p => p.Category);
-            return View(await photoAlbumContext.ToListAsync());
+            return View(await _context.Category.ToListAsync());
         }
 
-        // GET: Photos/Details/5
+        // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +33,39 @@ namespace PhotoAlbum.Controllers
                 return NotFound();
             }
 
-            var photo = await _context.Photo
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.PhotoId == id);
-            if (photo == null)
+            var category = await _context.Category
+                .FirstOrDefaultAsync(m => m.CategoryId == id);
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(photo);
+            return View(category);
         }
 
-        // GET: Photos/Create
+        // GET: Categories/Create
         public IActionResult Create()
         {
-            ViewData["CategoryID"] = new SelectList(_context.Set<Category>(), "CategoryId", "CategoryId");
             return View();
         }
 
-        // POST: Photos/Create
+        // POST: Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PhotoId,Title,Description,Filename,CreateDate,CategoryID")] Photo photo)
+        public async Task<IActionResult> Create([Bind("CategoryId,Title")] Category category)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(photo);
+                _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryID"] = new SelectList(_context.Set<Category>(), "CategoryId", "CategoryId", photo.CategoryID);
-            return View(photo);
+            return View(category);
         }
 
-        // GET: Photos/Edit/5
+        // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +73,22 @@ namespace PhotoAlbum.Controllers
                 return NotFound();
             }
 
-            var photo = await _context.Photo.FindAsync(id);
-            if (photo == null)
+            var category = await _context.Category.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryID"] = new SelectList(_context.Set<Category>(), "CategoryId", "CategoryId", photo.CategoryID);
-            return View(photo);
+            return View(category);
         }
 
-        // POST: Photos/Edit/5
+        // POST: Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PhotoId,Title,Description,Filename,CreateDate,CategoryID")] Photo photo)
+        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,Title")] Category category)
         {
-            if (id != photo.PhotoId)
+            if (id != category.CategoryId)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace PhotoAlbum.Controllers
             {
                 try
                 {
-                    _context.Update(photo);
+                    _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PhotoExists(photo.PhotoId))
+                    if (!CategoryExists(category.CategoryId))
                     {
                         return NotFound();
                     }
@@ -118,11 +113,10 @@ namespace PhotoAlbum.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryID"] = new SelectList(_context.Set<Category>(), "CategoryId", "CategoryId", photo.CategoryID);
-            return View(photo);
+            return View(category);
         }
 
-        // GET: Photos/Delete/5
+        // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,35 +124,34 @@ namespace PhotoAlbum.Controllers
                 return NotFound();
             }
 
-            var photo = await _context.Photo
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.PhotoId == id);
-            if (photo == null)
+            var category = await _context.Category
+                .FirstOrDefaultAsync(m => m.CategoryId == id);
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(photo);
+            return View(category);
         }
 
-        // POST: Photos/Delete/5
+        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var photo = await _context.Photo.FindAsync(id);
-            if (photo != null)
+            var category = await _context.Category.FindAsync(id);
+            if (category != null)
             {
-                _context.Photo.Remove(photo);
+                _context.Category.Remove(category);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PhotoExists(int id)
+        private bool CategoryExists(int id)
         {
-            return _context.Photo.Any(e => e.PhotoId == id);
+            return _context.Category.Any(e => e.CategoryId == id);
         }
     }
 }
