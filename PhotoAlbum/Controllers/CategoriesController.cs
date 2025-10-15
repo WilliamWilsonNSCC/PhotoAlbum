@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using PhotoAlbum.Models;
 
 namespace PhotoAlbum.Controllers
 {
+    [Authorize]
     public class CategoriesController : Controller
     {
         private readonly PhotoAlbumContext _context;
@@ -60,7 +62,7 @@ namespace PhotoAlbum.Controllers
             {
                 _context.Add(category);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Home");
             }
             return View(category);
         }
@@ -78,6 +80,7 @@ namespace PhotoAlbum.Controllers
             {
                 return NotFound();
             }
+
             return View(category);
         }
 
@@ -111,7 +114,7 @@ namespace PhotoAlbum.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Home");
             }
             return View(category);
         }
@@ -146,7 +149,7 @@ namespace PhotoAlbum.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "Home");
         }
 
         private bool CategoryExists(int id)

@@ -4,41 +4,49 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Edit Photos</h1>
 
 <h4>Photo</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="PhotoId" />
-            <div class="form-group">
+            <div class="mb-3">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @* <div class="mb-3">
                 <label asp-for="Filename" class="control-label"></label>
                 <input asp-for="Filename" class="form-control" />
                 <span asp-validation-for="Filename" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+            </div> *@
+            <div class="mb-3">
                 <label asp-for="CreateDate" class="control-label"></label>
-                <input asp-for="CreateDate" class="form-control" />
+                <input asp-for="CreateDate" class="form-control" readonly />
                 <span asp-validation-for="CreateDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <label asp-for="CategoryID" class="control-label"></label>
                 <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.CategoryID"></select>
                 <span asp-validation-for="CategoryID" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div>
+                <img src="/photos/@Model.Filename" alt="@Model.Title" class="thumbnail" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="FormFile" class="control-label"></label>
+                <input asp-for="FormFile" class="form-control" />
+                <span asp-validation-for="FormFile" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -46,7 +54,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Home" asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

@@ -1,30 +1,58 @@
-using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PhotoAlbum.Data;
 using PhotoAlbum.Models;
+using System.Diagnostics;
 
 namespace PhotoAlbum.Controllers
 {
+
     // The Home Controller class
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly PhotoAlbumContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, PhotoAlbumContext context)
         {
             _logger = logger;
-
+            _context = context;
             
         }
 
-        public IActionResult Index()
+        // GET: Photos
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var photos = await _context.Photo
+                .OrderByDescending(m => m.CreateDate)
+                .Include(p => p.Category)
+                .ToListAsync();
+
+            return View(photos);
         }
 
-        public IActionResult Details(int id)
+        // GET: Photos/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var photo = await _context.Photo
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(m => m.PhotoId == id);
+
+            if (photo == null)
+            {
+                return NotFound();
+            }
+
+            return View(photo);
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
