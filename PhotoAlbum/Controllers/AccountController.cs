@@ -8,6 +8,14 @@ namespace PhotoAlbum.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IConfiguration _configuration;
+
+        //Constructor
+        public AccountController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         //Get: /Account/Login
         public IActionResult Login()
         {
@@ -20,7 +28,7 @@ namespace PhotoAlbum.Controllers
         public async Task<IActionResult> Login(string username, string password, string? returnUrl = null)
         {
             //Validate username and password
-            if(username == "admin" && password == "admin123")
+            if(username == _configuration["photos_username"] && password == _configuration["photos_password"])
             {
                 // Create a list of claims identifying the user
                 var claims = new List<Claim>
