@@ -21,6 +21,8 @@ namespace PhotoAlbum.Models
         [Display(Name = "Category")]
         public int CategoryID { get; set; }
 
+        public List<Comment>? Comments { get; set; } // nullable
+
         //Navigation property
         public Category? Category { get; set; }
 
